@@ -175,8 +175,10 @@ class Story < WorkPackage
   private
 
   def self.condition(project_id, sprint_ids, extras = [])
-    c = ['project_id = ? AND type_id in (?) AND fixed_version_id in (?)',
-         project_id, Story.types, sprint_ids]
+    project = Project.find_by(id: project_id)
+    project_ids = project.hierarchy().map(&:id)
+    c = ['project_id in (?) AND type_id in (?) AND fixed_version_id in (?)',
+         project_ids, Story.types, sprint_ids]
 
     if extras.size > 0
       c[0] += ' ' + extras.shift
