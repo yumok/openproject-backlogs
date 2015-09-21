@@ -175,7 +175,7 @@ class Story < WorkPackage
   private
 
   def self.condition(project_id, sprint_ids, extras = [])
-    project = Project.find_by(id: project_id)
+    project = Project.find(project_id)
     project_ids = project.hierarchy().map(&:id)
     c = ['project_id in (?) AND type_id in (?) AND fixed_version_id in (?)',
          project_ids, Story.types, sprint_ids]
